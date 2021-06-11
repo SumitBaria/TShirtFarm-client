@@ -108,6 +108,10 @@ const AddCategoryMain = styled.div`
   padding: 20px 90px;
   border-radius: 6px;
   box-shadow: 2px 2px 9px 5px rgba(0, 0, 0, 0.2);
+
+  @media (max-width: 612px) {
+    padding: 20px 30px;
+  }
 `;
 
 const Title = styled.div`
@@ -125,6 +129,10 @@ const FormBody = styled.form`
 
   .MuiFormControl-root {
     margin: 15px 0px;
+  }
+
+  @media (max-width: 660px) {
+    margin: 5px 15px;
   }
 `;
 
