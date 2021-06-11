@@ -1,0 +1,19 @@
+* {
+  margin: 0%;
+}
+
+.btn,
+.jumbotron,
+.nav :hover {
+  border-radius: 0px;
+}
+
+body {
+  /* background: #343a40; */
+  font-family: "Limelight", cursive;
+}
+
+.MuiPaper-root a {
+  text-decoration: none;
+  margin: 10px;
+}
