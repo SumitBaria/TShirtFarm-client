@@ -261,7 +261,7 @@ const UpdateProduct = ({ match }) => {
           />
         </FormControl>
         <Button variant="contained" color="primary" onClick={onSubmit}>
-          Add
+          Update
         </Button>
       </FormBody>
     );

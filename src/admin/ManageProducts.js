@@ -1,4 +1,15 @@
-import { Container, Divider, Grid } from "@material-ui/core";
+import {
+  Container,
+  Divider,
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+} from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import Base from "../core/Base";
 import styled from "styled-components";
@@ -16,6 +27,17 @@ const ManageProducts = () => {
   const [error, setError] = useState("");
 
   const { user, token } = isAuthenticated();
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
 
   const preload = () => {
     GetProducts().then((data) => {
@@ -55,67 +77,55 @@ const ManageProducts = () => {
 
   const ManageProductsTable = () => {
     return (
-      <ManageTable>
-        <TableTitle>
-          <Grid container>
-            <Grid item xs={6} sm={4} md={2}>
-              Name
-            </Grid>
-            <Grid item xs={6} sm={4} md={2}>
-              Description
-            </Grid>
-            <Grid item xs={6} sm={4} md={1}>
-              Category
-            </Grid>
-            <Grid item xs={6} sm={4} md={1}>
-              Price
-            </Grid>
-            <Grid item xs={6} sm={4} md={1}>
-              Stock
-            </Grid>
-            <Grid item xs={6} sm={4} md={1}>
-              Sold
-            </Grid>
-            <Grid item xs={6} sm={4} md={1}>
-              Feature
-            </Grid>
-            <Grid item xs={6} sm={4} md={2}>
-              Offer
-            </Grid>
-            <Grid item xs={6} sm={4} md={1}></Grid>
-          </Grid>
-          <Divider />
-        </TableTitle>
-        <TableBody>
-          {products.map((product, index) => {
-            return (
-              <>
-                <Grid container key={index}>
-                  <Grid item xs={6} sm={4} md={2}>
+      <>
+        <TableContainer>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <TableHD>Name</TableHD>
+                </TableCell>
+                <TableCell align="right">
+                  <TableHD>Description</TableHD>
+                </TableCell>
+                <TableCell align="right">
+                  <TableHD>Category</TableHD>
+                </TableCell>
+                <TableCell align="right">
+                  <TableHD>Price</TableHD>
+                </TableCell>
+                <TableCell align="right">
+                  <TableHD>Stock</TableHD>
+                </TableCell>
+                <TableCell align="right">
+                  <TableHD>Sold</TableHD>
+                </TableCell>
+                <TableCell align="right">
+                  <TableHD>Feature</TableHD>
+                </TableCell>
+                <TableCell align="right">
+                  <TableHD>Offer</TableHD>
+                </TableCell>
+                <TableCell align="right"></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {products.map((product, index) => (
+                <TableRow key={index}>
+                  <TableCell component="th" scope="row">
                     {product.name}
-                  </Grid>
-                  <Grid item xs={6} sm={4} md={2}>
-                    {product.description}
-                  </Grid>
-                  <Grid item xs={6} sm={4} md={1}>
-                    {product.category.name}
-                  </Grid>
-                  <Grid item xs={6} sm={4} md={1}>
-                    {product.price}
-                  </Grid>
-                  <Grid item xs={6} sm={4} md={1}>
-                    {product.stock}
-                  </Grid>
-                  <Grid item xs={6} sm={4} md={1}>
-                    {product.sold}
-                  </Grid>
-                  <Grid item xs={6} sm={4} md={1}>
+                  </TableCell>
+                  <TableCell align="right">{product.description}</TableCell>
+                  <TableCell align="right">{product.category.name}</TableCell>
+                  <TableCell align="right">{product.price}</TableCell>
+                  <TableCell align="right">{product.stock}</TableCell>
+                  <TableCell align="right">{product.sold}</TableCell>
+                  <TableCell align="right">
+                    {" "}
                     {JSON.stringify(product.feature)}
-                  </Grid>
-                  <Grid item xs={6} sm={4} md={2}>
-                    {product.offer}
-                  </Grid>
-                  <Grid item xs={6} sm={4} md={1}>
+                  </TableCell>
+                  <TableCell align="right">{product.offer}</TableCell>
+                  <TableCell align="right">
                     <TableIcon>
                       <div
                         onClick={() => {
@@ -130,14 +140,22 @@ const ManageProducts = () => {
                         </Link>
                       </div>
                     </TableIcon>
-                  </Grid>
-                </Grid>
-                <Divider />
-              </>
-            );
-          })}
-        </TableBody>
-      </ManageTable>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={products.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+      </>
     );
   };
 
@@ -166,6 +184,10 @@ const ManageProductMain = styled.div`
   padding: 20px;
   border-radius: 6px;
   box-shadow: 2px 2px 9px 5px rgba(0, 0, 0, 0.2);
+
+  /* .MuiTableHead-root {
+    background-color: #121858;
+  } */
 `;
 
 const BackIcon = styled.div`
@@ -191,30 +213,6 @@ const Title = styled.div`
   font-size: 30px;
 `;
 
-const ManageTable = styled.div`
-  margin: 35px 0px;
-`;
-
-const TableTitle = styled.div`
-  font-size: 17px;
-  font-weight: 600;
-  .MuiGrid-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 5px;
-  }
-`;
-
-const TableBody = styled.div`
-  margin: 25px 0px;
-
-  .MuiGrid-container {
-    margin-top: 15px;
-    display: flex;
-    align-items: center;
-  }
-`;
-
 const TableIcon = styled.div`
   display: flex;
   justify-content: space-evenly;
@@ -233,4 +231,9 @@ const TableIcon = styled.div`
       background-color: rgba(0, 0, 0, 0.1);
     }
   }
+`;
+
+const TableHD = styled.span`
+  font-size: 15px;
+  font-weight: 600;
 `;

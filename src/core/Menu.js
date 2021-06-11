@@ -63,17 +63,19 @@ const Menu = () => {
         )}
 
         {isAuthenticated() && (
-          <Button
-            color="secondary"
-            size="large"
-            onClick={() => {
-              signout(() => {
-                return history.push("/");
-              });
-            }}
-          >
-            LogOut
-          </Button>
+          <Link>
+            <Button
+              color="secondary"
+              size="large"
+              onClick={() => {
+                signout(() => {
+                  return history.push("/");
+                });
+              }}
+            >
+              LogOut
+            </Button>
+          </Link>
         )}
       </>
     );

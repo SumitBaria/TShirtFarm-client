@@ -8,33 +8,23 @@ import {
 import React, { useEffect, useState } from "react";
 import Base from "../core/Base";
 import styled from "styled-components";
-import { GetACategory, UpdateThisCategory } from "./helper/adminapicall";
+// import { GetACategory, UpdateThisCategory } from "./helper/adminapicall";
 import { isAuthenticated } from "../auth/helper";
 import { Alert, AlertTitle } from "@material-ui/lab";
 import KeyboardBackspaceOutlinedIcon from "@material-ui/icons/KeyboardBackspaceOutlined";
 import { Link, useHistory } from "react-router-dom";
+import { UpdateThisUser, GetAUser } from "./helper/userapicalls";
 
-const UpdateCategory = ({ match }) => {
-  const [name, setName] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
+const UpdateUser = ({ match }) => {
   const { user, token } = isAuthenticated();
 
+  const [firstName, setFirstName] = useState(user.name);
+  const [lastName, setLastName] = useState(user.lastname);
+  const [email, setEmail] = useState(user.email);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+
   const history = useHistory();
-
-  const preload = (categoryId) => {
-    GetACategory(categoryId).then((data) => {
-      if (data.error) {
-        setError(data.error);
-      } else {
-        setName(data.name);
-      }
-    });
-  };
-
-  useEffect(() => {
-    preload(match.params.categoryId);
-  }, []);
 
   const handleErrorMessage = () => {
     return (
@@ -66,15 +56,20 @@ const UpdateCategory = ({ match }) => {
   const onSubmit = (event) => {
     event.preventDefault();
     setError(false);
-    console.log(name);
-    UpdateThisCategory(match.params.categoryId, user._id, token, { name })
+    UpdateThisUser(user._id, token, {
+      name: firstName,
+      lastname: lastName,
+      email,
+    })
       .then((data) => {
         console.log(data);
         if (data.error) {
           setError(data.error);
           setSuccess(false);
         } else {
-          setName("");
+          setFirstName("");
+          setLastName("");
+          setEmail("");
           setError("");
           setSuccess(true);
         }
@@ -86,16 +81,34 @@ const UpdateCategory = ({ match }) => {
     return (
       <FormBody noValidate autoComplete="off">
         <FormControl>
-          <InputLabel htmlFor="standard-category-name">
-            Category Name
-          </InputLabel>
+          <InputLabel htmlFor="standard-category-name">First Name</InputLabel>
           <Input
             id="standard-category-name"
-            onChange={(e) => setName(e.target.value)}
-            value={name}
+            onChange={(e) => setFirstName(e.target.value)}
+            value={firstName}
             fullWidth
           />
         </FormControl>
+        <FormControl>
+          <InputLabel htmlFor="standard-category-name">Last Name</InputLabel>
+          <Input
+            id="standard-category-name"
+            onChange={(e) => setLastName(e.target.value)}
+            value={lastName}
+            fullWidth
+          />
+        </FormControl>
+        <FormControl>
+          <InputLabel htmlFor="standard-category-name">Email</InputLabel>
+          <Input
+            id="standard-category-name"
+            type="email"
+            onChange={(e) => setEmail(e.target.value)}
+            value={email}
+            fullWidth
+          />
+        </FormControl>
+
         <Button variant="contained" color="primary" onClick={onSubmit}>
           Update
         </Button>
@@ -122,7 +135,7 @@ const UpdateCategory = ({ match }) => {
   );
 };
 
-export default UpdateCategory;
+export default UpdateUser;
 
 const AddCategoryMain = styled.div`
   margin: 70px 0px;

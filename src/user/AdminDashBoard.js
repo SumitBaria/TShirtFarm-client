@@ -52,7 +52,10 @@ const AdminDashBoard = () => {
             <Grid item xs={12} sm={9}>
               <Title>Admin Profile</Title>
               <Body>
-                <Name>Name: {isAuthenticated().user.name}</Name>
+                <Name>
+                  Name: {isAuthenticated().user.name}&nbsp;{" "}
+                  {isAuthenticated().user.lastname}{" "}
+                </Name>
                 <Name>Email: {isAuthenticated().user.email}</Name>
                 <Name>Admin Priviladges are given</Name>
               </Body>

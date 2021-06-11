@@ -1,4 +1,15 @@
-import { Container, Divider, Grid } from "@material-ui/core";
+import {
+  Container,
+  Divider,
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+} from "@material-ui/core";
 import React, { useState, useEffect } from "react";
 import Base from "../core/Base";
 import styled from "styled-components";
@@ -7,12 +18,7 @@ import KeyboardBackspaceOutlinedIcon from "@material-ui/icons/KeyboardBackspaceO
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import { Link } from "react-router-dom";
-import {
-  DeleteCategory,
-  DeleteProduct,
-  GetCategories,
-  GetProducts,
-} from "./helper/adminapicall";
+import { DeleteCategory, GetCategories } from "./helper/adminapicall";
 import { isAuthenticated } from "../auth/helper";
 import { Alert, AlertTitle } from "@material-ui/lab";
 
@@ -21,6 +27,17 @@ const ManageCategories = () => {
   const [error, setError] = useState("");
 
   const { user, token } = isAuthenticated();
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
 
   const preload = () => {
     GetCategories().then((data) => {
@@ -60,27 +77,25 @@ const ManageCategories = () => {
 
   const ManageProductsTable = () => {
     return (
-      <ManageTable>
-        <TableTitle>
-          <Grid container>
-            <Grid item xs={6} sm={4} md={10}>
-              Name
-            </Grid>
-
-            <Grid item xs={6} sm={4} md={2}></Grid>
-          </Grid>
-          <Divider />
-        </TableTitle>
-        <TableBody>
-          {categories.map((category, index) => {
-            return (
-              <>
-                <Grid container key={index}>
-                  <Grid item xs={6} sm={8} md={10}>
+      <>
+        <TableContainer>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                <TableCell align="left">
+                  <TableHD>Name</TableHD>
+                </TableCell>
+                <TableCell align="right"></TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {categories.map((category, index) => (
+                <TableRow key={index}>
+                  <TableCell component="th" scope="row">
                     {category.name}
-                  </Grid>
+                  </TableCell>
 
-                  <Grid item xs={6} sm={4} md={2}>
+                  <TableCell align="right">
                     <TableIcon>
                       <div
                         onClick={() => {
@@ -90,19 +105,27 @@ const ManageCategories = () => {
                         <DeleteIcon />
                       </div>
                       <div>
-                        <Link to={`/admin/category/update/${category._id}`}>
+                        <Link to={`/admin/product/update/${category._id}`}>
                           <EditIcon />
                         </Link>
                       </div>
                     </TableIcon>
-                  </Grid>
-                </Grid>
-                <Divider />
-              </>
-            );
-          })}
-        </TableBody>
-      </ManageTable>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 100]}
+          component="div"
+          count={categories.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
+        />
+      </>
     );
   };
 
@@ -157,30 +180,6 @@ const Title = styled.div`
   font-size: 30px;
 `;
 
-const ManageTable = styled.div`
-  margin: 35px 0px;
-`;
-
-const TableTitle = styled.div`
-  font-size: 17px;
-  font-weight: 600;
-  .MuiGrid-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 5px;
-  }
-`;
-
-const TableBody = styled.div`
-  margin: 25px 0px;
-
-  .MuiGrid-container {
-    margin-top: 15px;
-    display: flex;
-    align-items: center;
-  }
-`;
-
 const TableIcon = styled.div`
   display: flex;
   justify-content: space-evenly;
@@ -199,4 +198,9 @@ const TableIcon = styled.div`
       background-color: rgba(0, 0, 0, 0.1);
     }
   }
+`;
+
+const TableHD = styled.span`
+  font-size: 15px;
+  font-weight: 600;
 `;
