@@ -214,7 +214,7 @@ const SignupMain = styled.div`
 
   @media (max-width: 990px) {
     margin: 20px 0px;
-    height: fit-content;
+    height: 90%;
 
     .MuiGrid-container {
       .MuiGrid-item:first-child {

@@ -187,6 +187,7 @@ const SigninMain = styled.div`
 
   @media (max-width: 990px) {
     margin: 20px 0px;
+    height: 90%;
 
     .MuiGrid-container {
       .MuiGrid-item:first-child {
