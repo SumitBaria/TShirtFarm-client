@@ -97,6 +97,18 @@ export default CardComponent;
 const CardMain = styled.div`
   border-radius: 6px;
   box-shadow: 2px 2px 9px 5px rgba(0, 0, 0, 0.2);
+
+  @media (max-width: 1150px) {
+    .MuiCard-root {
+      .MuiButtonBase-root {
+        .MuiCardContent-root {
+          .MuiTypography-root {
+            font-size: 10px;
+          }
+        }
+      }
+    }
+  }
 `;
 
 const CardTitle = styled.span`

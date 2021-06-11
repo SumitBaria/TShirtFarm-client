@@ -120,7 +120,7 @@ const Payment = ({ products, setReload = (f) => f, reload = undefined }) => {
           setReload(!reload);
         })
         .catch((error) => {
-          setInfo({ loading: false, success: false });
+          setInfo({ ...info, loading: false, success: false });
           console.log("PAYMENT FAILED");
         });
     });
