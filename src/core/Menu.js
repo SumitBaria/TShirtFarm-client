@@ -83,7 +83,12 @@ const Menu = () => {
     <MenuMain>
       <Container>
         <Brand>
-          <Link to="/">TShirtsFarm</Link>
+          <Link to="/">
+            <Img
+              alt="Brand Logo"
+              src="./Shopping Bag Letter Initial Logo (6).svg"
+            />
+          </Link>
         </Brand>
         <MenuLinkButton>{list()}</MenuLinkButton>
         <MenuLinkButtonsMobile>
@@ -119,10 +124,10 @@ const MenuMain = styled.div`
 `;
 
 const Brand = styled.div`
-  font-size: 30px;
+  /* font-size: 30px;
   font-family: "Limelight", cursive;
   font-weight: 600;
-  letter-spacing: 1px;
+  letter-spacing: 1px; */
 
   a {
     text-decoration: none;
@@ -133,6 +138,7 @@ const Brand = styled.div`
 const MenuLinkButton = styled.div`
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   float: right;
   width: 100vw;
   a {
@@ -168,4 +174,9 @@ const MenuLinkButtonsMobile = styled.div`
   @media (min-width: 990px) {
     opacity: 0;
   }
+`;
+
+const Img = styled.img`
+  width: 150px;
+  height: 70px;
 `;
